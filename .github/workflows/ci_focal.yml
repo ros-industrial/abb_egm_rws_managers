@@ -20,12 +20,12 @@ jobs:
     # industrial_ci uses Docker, so we don't need a specific Ubuntu version
     runs-on: ubuntu-latest
     env:
+      BUILDER: catkin_tools
       CI_NAME: Ubuntu Focal
       OS_NAME: ubuntu
       OS_CODE_NAME: focal
       CCACHE_DIR: "/home/runner/work/abb_egm_rws_managers/abb_egm_rws_managers/focal/.ccache"
       UPSTREAM_WORKSPACE: 'github:ros-industrial/abb_librws#master github:ros-industrial/abb_libegm#master'
-      BUILDER: catkin_tools
     steps:
       - uses: actions/checkout@v2
 
