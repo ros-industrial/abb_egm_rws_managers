@@ -19,7 +19,7 @@ The *ROS agnostic* components are primarily:
 
 - Higher level management of *Externally Guided Motion* (`EGM`) communication sessions.
 - Higher level management of *Robot Web Services* (`RWS`) communication sessions.
-- Structured description definitions of an ABB robot controller (*i.e. see the (robot_controller_description.proto)[proto/robot_controller_description.proto] file*).
+- Structured description definitions of an ABB robot controller (*i.e. see the [robot_controller_description.proto](proto/robot_controller_description.proto) file*).
 
 Please see [abb_robot_driver](https://github.com/ros-industrial/abb_robot_driver) for more details.
 
