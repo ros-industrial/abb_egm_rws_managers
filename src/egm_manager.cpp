@@ -95,7 +95,7 @@ missed_messages_{MISSED_MESSAGES_THRESHOLD}
   // Create the communication interface.
   p_interface_ = std::make_unique<egm::EGMControllerInterface>(io_service, configuration.port_number, interface_cfg);
 
-  if(!p_interface_ && !p_interface_->isInitialized())
+  if(!p_interface_ || !p_interface_->isInitialized())
   {
     throw std::runtime_error{"Failed to initialize EGM interface"};
   }
