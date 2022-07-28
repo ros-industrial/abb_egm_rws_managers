@@ -39,8 +39,6 @@
 
 #include "abb_egm_rws_managers/egm_manager.h"
 
-#include <iostream>
-
 namespace
 {
 /**
@@ -84,23 +82,21 @@ missed_messages_{MISSED_MESSAGES_THRESHOLD}
   // Check for special cases (six axes robot is used by default).
   if(configuration.mech_unit_group.has_robot())
   {
-    std::cout << "[egm_manager] Configuration mech unit has robot!" << std::endl;
     if(configuration.mech_unit_group.robot().axes_total() == 7)
     {
-      std::cout << "[egm_manager] The mech unit has 7 Axes!" << std::endl;
       interface_cfg.axes = egm::RobotAxes::Seven;
     }
     else if(configuration.mech_unit_group.robot().axes_total() == 4)
     {
-      std::cout << "[egm_manager] The mech unit has 4 Axes!" << std::endl;
       interface_cfg.axes = egm::RobotAxes::Four;
     }
     else
-      std::cout << "[egm_manager] The mech unit will default to 6 Axes!" << std::endl;
+    {
+      // Default to six axes as defined in the BaseConfiguration constructor
+    }
   }
   else
   {
-    std::cout << "[egm_manager] Configuration mech unit does not have a robot! Assuming None!" << std::endl;
     interface_cfg.axes = egm::RobotAxes::None;
   }
 

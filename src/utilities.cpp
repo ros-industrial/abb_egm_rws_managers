@@ -37,7 +37,6 @@
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
-#include <iostream>
 
 #include "abb_egm_rws_managers/utilities.h"
 
@@ -87,11 +86,8 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
   auto createMotionUnit{[&](const MechanicalUnit& unit)
   {
     MotionData::MechanicalUnit motion_unit{};
-    std::cout << "[initializeMotionData] ### Creating Motion Unit ###" << std::endl;
     motion_unit.name = unit.name();
-    std::cout << "name: " << motion_unit.name << std::endl;
     motion_unit.type = unit.type();
-    std::cout << "type enum: " << motion_unit.type << std::endl;
     motion_unit.active = unit.mode() == MechanicalUnit_Mode_ACTIVATED;
 
     // Set indicator for if the unit is supported by EGM or not.
@@ -115,8 +111,6 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
       }
       else if (unit.axes_total() == 4)
       {
-        std::cout << "setting supported_by_egm = true for robot with "
-                  << unit.axes_total() << "axes" << std::endl;
         motion_unit.supported_by_egm = true;
       }
       else
@@ -148,12 +142,6 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
       motion_joint.command.position = 0.0;
       motion_joint.command.velocity = 0.0;
       motion_unit.joints.push_back(motion_joint);
-      std::cout <<"Configured joint: " << motion_joint.name
-                << " with rotation capability: " << motion_joint.rotational
-                << " and limits [" << motion_joint.lower_limit << ","
-                << motion_joint.upper_limit << "]"
-                << std::endl;
-
     }
 
     return motion_unit;
@@ -172,8 +160,6 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
 
     if(group.has_robot() && !group.robot().standardized_joints().empty())
     {
-      std::cout << "[initializeMotionData]: Robot " << motion_group.name << " has "
-                << group.robot().axes_total() << " axes" << std::endl;
       if(group.robot().axes_total() != group.robot().standardized_joints_size())
       {
         throw std::runtime_error{"Number of robot axes are not equal to expected number of joints"};
