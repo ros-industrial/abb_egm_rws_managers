@@ -93,7 +93,6 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
     motion_unit.type = unit.type();
     std::cout << "type enum: " << motion_unit.type << std::endl;
     motion_unit.active = unit.mode() == MechanicalUnit_Mode_ACTIVATED;
-    motion_unit.supported_by_egm = false;
 
     // Set indicator for if the unit is supported by EGM or not.
     // TODO(YV): Check support for 4 joints
@@ -113,6 +112,16 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
         {
           motion_unit.supported_by_egm = true;
         }
+      }
+      else if (unit.axes_total() == 4)
+      {
+        std::cout << "setting supported_by_egm = true for robot with "
+                  << unit.axes_total() << "axes" << std::endl;
+        motion_unit.supported_by_egm = true;
+      }
+      else
+      {
+        motion_unit.supported_by_egm = false;
       }
     }
     else if(unit.type() == MechanicalUnit_Type_ROBOT || unit.type() == MechanicalUnit_Type_SINGLE)
@@ -139,6 +148,12 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
       motion_joint.command.position = 0.0;
       motion_joint.command.velocity = 0.0;
       motion_unit.joints.push_back(motion_joint);
+      std::cout <<"Configured joint: " << motion_joint.name
+                << " with rotation capability: " << motion_joint.rotational
+                << " and limits [" << motion_joint.lower_limit << ","
+                << motion_joint.upper_limit << "]"
+                << std::endl;
+
     }
 
     return motion_unit;

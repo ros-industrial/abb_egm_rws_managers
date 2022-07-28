@@ -90,7 +90,13 @@ missed_messages_{MISSED_MESSAGES_THRESHOLD}
       std::cout << "[egm_manager] The mech unit has 7 Axes!" << std::endl;
       interface_cfg.axes = egm::RobotAxes::Seven;
     }
-    std::cout << "[egm_manager] The mech unit has 6 Axes!" << std::endl;
+    else if(configuration.mech_unit_group.robot().axes_total() == 4)
+    {
+      std::cout << "[egm_manager] The mech unit has 4 Axes!" << std::endl;
+      interface_cfg.axes = egm::RobotAxes::Four;
+    }
+    else
+      std::cout << "[egm_manager] The mech unit will default to 6 Axes!" << std::endl;
   }
   else
   {
