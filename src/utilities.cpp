@@ -86,12 +86,12 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
   auto createMotionUnit{[&](const MechanicalUnit& unit)
   {
     MotionData::MechanicalUnit motion_unit{};
+
     motion_unit.name = unit.name();
     motion_unit.type = unit.type();
     motion_unit.active = unit.mode() == MechanicalUnit_Mode_ACTIVATED;
 
     // Set indicator for if the unit is supported by EGM or not.
-    // TODO(YV): Check support for 4 joints
     if(unit.type() == MechanicalUnit_Type_TCP_ROBOT)
     {
       // TCP robots:
