@@ -76,7 +76,10 @@ MechanicalUnitGroup findMechanicalUnitGroup(const std::string& name, const Robot
   return mug;
 }
 
-void initializeMotionData(MotionData& motion_data, const RobotControllerDescription& description)
+void initializeMotionData(
+  MotionData& motion_data,
+  const RobotControllerDescription& description,
+  const std::vector<InitialJointValue>& joint_values)
 {
   const auto& rw_version{description.header().robot_ware_version()};
 
@@ -122,6 +125,7 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
     }
 
     // Add joint information.
+    std::size_t joint_count = 0;
     for(const auto& standardized_joint : unit.standardized_joints())
     {
       MotionData::Joint motion_joint{};
@@ -129,12 +133,19 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
       motion_joint.rotational = standardized_joint.rotating_move();
       motion_joint.lower_limit = standardized_joint.lower_joint_bound();
       motion_joint.upper_limit = standardized_joint.upper_joint_bound();
-      motion_joint.state.position = 0.0;
-      motion_joint.state.velocity = 0.0;
-      motion_joint.state.effort = 0.0;
-      motion_joint.command.position = 0.0;
-      motion_joint.command.velocity = 0.0;
+      InitialJointValue initial_value;
+      // Use InitialJointValue if provided.
+      if (joint_count < joint_values.size())
+      {
+        initial_value = joint_values.at(joint_count);
+      }
+      motion_joint.state.position = initial_value.position_state;
+      motion_joint.state.velocity = initial_value.velocity_state;
+      motion_joint.state.effort = initial_value.effort_state;
+      motion_joint.command.position = initial_value.position_command;
+      motion_joint.command.velocity = initial_value.velocity_command;
       motion_unit.joints.push_back(motion_joint);
+      ++joint_count;
     }
 
     return motion_unit;

@@ -97,14 +97,61 @@ struct ABB_EGM_RWS_MANAGERS_EXPORT Constants
 MechanicalUnitGroup findMechanicalUnitGroup(const std::string& name, const RobotControllerDescription& description);
 
 /**
+ * \brief A data structure to bundle the initial states & commands for position, velocity and effort of a joint.
+ */
+struct InitialJointValue
+{
+  /**
+   * \brief Initial position state.
+   */
+  double position_state;
+
+  /**
+   * \brief Initial position command.
+   */
+  double position_command;
+
+  /**
+   * \brief Initial velocity state.
+   */
+  double velocity_state;
+
+  /**
+   * \brief Initial velocity command.
+   */
+  double velocity_command;
+
+  /**
+   * \brief Initial effort state.
+   */
+  double effort_state;
+
+  /**
+   * \brief Default constructor.
+   */
+  InitialJointValue()
+  : position_state(0.0),
+    position_command(0.0),
+    velocity_state(0.0),
+    velocity_command(0.0),
+    effort_state(0.0)
+  {}
+
+};
+
+/**
  * \brief Initializes a motion data representation based on the description of a robot controller.
  *
  * \param motion_data representation to initialize.
  * \param description of the robot controller.
+ * \param initial_values for the joints of the robot.
  *
  * \throw std::runtime_error if the initialization failed (e.g. number of axes are not equal to number of joints).
  */
-void initializeMotionData(MotionData& motion_data, const RobotControllerDescription& description);
+void initializeMotionData(
+  MotionData& motion_data,
+  const RobotControllerDescription& description,
+  const std::vector<InitialJointValue>& joint_values = {});
 
 /**
  * \brief Creates a summary text of a robot controller description.
