@@ -90,7 +90,6 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
     motion_unit.name = unit.name();
     motion_unit.type = unit.type();
     motion_unit.active = unit.mode() == MechanicalUnit_Mode_ACTIVATED;
-    motion_unit.supported_by_egm = false;
 
     // Set indicator for if the unit is supported by EGM or not.
     if(unit.type() == MechanicalUnit_Type_TCP_ROBOT)
@@ -109,6 +108,14 @@ void initializeMotionData(MotionData& motion_data, const RobotControllerDescript
         {
           motion_unit.supported_by_egm = true;
         }
+      }
+      else if (unit.axes_total() == 4)
+      {
+        motion_unit.supported_by_egm = true;
+      }
+      else
+      {
+        motion_unit.supported_by_egm = false;
       }
     }
     else if(unit.type() == MechanicalUnit_Type_ROBOT || unit.type() == MechanicalUnit_Type_SINGLE)

@@ -86,6 +86,14 @@ missed_messages_{MISSED_MESSAGES_THRESHOLD}
     {
       interface_cfg.axes = egm::RobotAxes::Seven;
     }
+    else if(configuration.mech_unit_group.robot().axes_total() == 4)
+    {
+      interface_cfg.axes = egm::RobotAxes::Four;
+    }
+    else
+    {
+      // Default to six axes as defined in the BaseConfiguration constructor
+    }
   }
   else
   {
