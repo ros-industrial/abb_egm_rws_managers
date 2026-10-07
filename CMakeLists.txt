@@ -137,6 +137,15 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_14)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE -D_USE_MATH_DEFINES)
 
+include(CTest)
+if(BUILD_TESTING)
+  add_executable(test_joint_command_conversion test/test_joint_command_conversion.cpp)
+  target_include_directories(test_joint_command_conversion PRIVATE src)
+  target_link_libraries(test_joint_command_conversion PRIVATE ${PROJECT_NAME})
+  target_compile_features(test_joint_command_conversion PRIVATE cxx_std_14)
+  add_test(NAME joint_command_conversion COMMAND test_joint_command_conversion)
+endif()
+
 if(NOT BUILD_SHARED_LIBS)
   target_compile_definitions(${PROJECT_NAME} PUBLIC "ABB_EGM_RWS_MANAGERS_STATIC_DEFINE")
 endif()

@@ -38,6 +38,7 @@
 #include <stdexcept>
 
 #include "abb_egm_rws_managers/egm_manager.h"
+#include "joint_command_conversion.h"
 
 namespace
 {
@@ -46,12 +47,6 @@ namespace
  */
 constexpr unsigned int MISSED_MESSAGES_THRESHOLD{5};
 
-/**
- * \brief Minimum accepted speed [deg/s or mm/s] for velocity commands.
- *
- * Intended for filtering away numerical errors.
- */
-constexpr double MIN_SPEED_THRESHOLD{0.5};
 }
 
 namespace abb
@@ -320,14 +315,7 @@ void EGMManager::Channel::updateTCPRobotJointCommands(const MotionData::Mechanic
 
         if(counter < p_positions->values_size() && counter < p_velocities->values_size())
         {
-          double conversion_factor{(joint.rotational ? Constants::RAD_TO_DEG : Constants::M_TO_MM)};
-          p_positions->set_values(counter, joint.command.position*conversion_factor);
-
-          // Only accept velocity commands larger than the speed threshold.
-          if(std::abs(joint.command.velocity*conversion_factor) > MIN_SPEED_THRESHOLD)
-          {
-            p_velocities->set_values(counter, joint.command.velocity*conversion_factor);
-          }
+          detail::copyJointCommand(joint, counter, p_positions, p_velocities);
         }
 
         ++counter;
@@ -354,14 +342,7 @@ void EGMManager::Channel::updateExternalJointCommands(const MotionData::Mechanic
 
         if(counter < p_positions->values_size() && counter < p_velocities->values_size())
         {
-          double conversion_factor{(joint.rotational ? Constants::RAD_TO_DEG : Constants::M_TO_MM)};
-          p_positions->set_values(counter, joint.command.position*conversion_factor);
-
-          // Only accept velocity commands larger than the speed threshold.
-          if(std::abs(joint.command.velocity*conversion_factor) > MIN_SPEED_THRESHOLD)
-          {
-            p_velocities->set_values(counter, joint.command.velocity*conversion_factor);
-          }
+          detail::copyJointCommand(joint, counter, p_positions, p_velocities);
         }
 
         ++counter;
