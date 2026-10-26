@@ -137,7 +137,7 @@ private:
      * \throw std::runtime_error if failed to create an EGM interface for the channel.
      */
     Channel(const ChannelConfiguration& configuration,
-            boost::asio::io_service& io_service,
+            boost::asio::io_context& io_service,
             boost::shared_ptr<boost::condition_variable> p_new_message_cv);
 
     /**
@@ -277,7 +277,7 @@ private:
   /**
    * \brief Manages asynchronous UDP communication events.
    */
-  boost::asio::io_service io_service_;
+  boost::asio::io_context io_service_;
 
   /**
    * \brief Threads for processing asynchronous UDP communication events.
